@@ -5,6 +5,7 @@
 /api/public/bundles/
 /api/var/
 /api/vendor/
+/api/public/videos
 /front/logs
 /front/*.log
 /front/npm-debug.log*
