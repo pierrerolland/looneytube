@@ -22,8 +22,6 @@ import CategoryLink from '@/components/CategoryLink';
 export default {
   components: {CategoryLink, Logo},
   async asyncData({ app }) {
-    console.log(process.env);
-    return { categories: [] };
     let categories = (await app.$axios.get(`${app.$axios.defaults.baseURL}/categories`)).data;
 
     return { categories };
