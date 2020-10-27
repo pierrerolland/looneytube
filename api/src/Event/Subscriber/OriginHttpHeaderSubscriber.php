@@ -39,7 +39,7 @@ class OriginHttpHeaderSubscriber implements EventSubscriberInterface
                     Request::METHOD_PUT,
                     Request::METHOD_DELETE
                 ]),
-                'Access-Control-Allow-Headers' => 'content-type,X-Locale,X-Local-Day'
+                'Access-Control-Allow-Headers' => 'content-type,authorization'
             ]);
             $event->setResponse($response);
         }

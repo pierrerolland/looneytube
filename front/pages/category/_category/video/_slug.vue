@@ -1,40 +1,34 @@
 <template>
-  <div class="container">
-    <div>
-      <nuxt-link to="/"><Logo /></nuxt-link>
-      <div>
-        <video controls autoplay>
-          <source :src="video.path" />
-        </video>
-      </div>
-    </div>
-  </div>
+  <video controls autoplay>
+    <source :src="video.path" />
+  </video>
 </template>
 
 <script>
-import Logo from '@/components/Logo';
-import CategoryLink from '@/components/CategoryLink';
-import VideoLink from '@/components/VideoLink';
-
 export default {
-  components: {VideoLink, CategoryLink, Logo},
   asyncData: async ({ app, params }) => {
-    let video = (await app.$axios.get(`${app.$axios.defaults.baseURL}/category/${params.category}/video/${params.slug}`)).data;
+    const token = localStorage.getItem('token');
 
-    return { video };
+    if (!token) {
+      app.context.redirect('/login');
+    } else {
+      try {
+        let video = (await app.$axios.get(`${app.$axios.defaults.baseURL}/category/${params.category}/video/${params.slug}`, { headers: { Authorization: `Bearer ${token}` } })).data;
+
+        return { video };
+      } catch (e) {
+        if (e.response.status === 401) {
+          app.context.redirect('/login');
+        } else {
+          throw e;
+        }
+      }
+    }
   }
 }
 </script>
 
 <style scoped>
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  text-align: center;
-}
-
 video {
   width: 100%;
 }

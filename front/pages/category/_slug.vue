@@ -1,43 +1,43 @@
 <template>
-  <div class="container">
-    <div>
-      <nuxt-link to="/"><Logo /></nuxt-link>
-      <div class="grid-5 has-gutter videos">
-        <video-link
-          v-for="video in category.videos"
-          :key="video.slug"
-          :video="video"
-          :category-slug="category.slug"
-        />
-      </div>
-    </div>
+  <div class="grid-5 has-gutter videos">
+    <video-link
+      v-for="video in category.videos"
+      :key="video.slug"
+      :video="video"
+      :category-slug="category.slug"
+    />
   </div>
 </template>
 
 <script>
-import Logo from '@/components/Logo';
 import CategoryLink from '@/components/CategoryLink';
 import VideoLink from '@/components/VideoLink';
 
 export default {
-  components: {VideoLink, CategoryLink, Logo},
+  components: { VideoLink, CategoryLink },
   asyncData: async ({ app, params }) => {
-    let category = (await app.$axios.get(`${app.$axios.defaults.baseURL}/category/${params.slug}`)).data;
+    const token = localStorage.getItem('token');
 
-    return { category };
+    if (!token) {
+      app.context.redirect('/login');
+    } else {
+      try {
+        let category = (await app.$axios.get(`${app.$axios.defaults.baseURL}/category/${params.slug}`, { headers: { Authorization: `Bearer ${token}` } })).data;
+
+        return {category};
+      } catch (e) {
+        if (e.response.status === 401) {
+          app.context.redirect('/login');
+        } else {
+          throw e;
+        }
+      }
+    }
   }
 }
 </script>
 
 <style scoped>
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  text-align: center;
-}
-
 .videos {
   padding: 2rem;
 }

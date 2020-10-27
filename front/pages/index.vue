@@ -1,43 +1,41 @@
 <template>
-  <div class="container">
-    <div>
-      <h1 class="title">
-        <Logo />
-      </h1>
-      <div class="grid-5 has-gutter categories">
-        <category-link
-          v-for="category in categories"
-          :key="category.slug"
-          :category="category"
-        />
-      </div>
-    </div>
+  <div class="grid-5 has-gutter categories">
+    <category-link
+      v-for="category in categories"
+      :key="category.slug"
+      :category="category"
+    />
   </div>
 </template>
 
 <script>
-import Logo from '@/components/Logo';
 import CategoryLink from '@/components/CategoryLink';
 
 export default {
-  components: {CategoryLink, Logo},
+  components: { CategoryLink },
   async asyncData({ app }) {
-    let categories = (await app.$axios.get(`${app.$axios.defaults.baseURL}/categories`)).data;
+    const token = localStorage.getItem('token');
 
-    return { categories };
+    if (!token) {
+      app.context.redirect('/login');
+    } else {
+      try {
+        let categories = (await app.$axios.get(`${app.$axios.defaults.baseURL}/categories`, { headers: { Authorization: `Bearer ${token}` } })).data;
+
+        return { categories };
+      } catch (e) {
+        if (e.response.status === 401) {
+          app.context.redirect('/login');
+        } else {
+          throw e;
+        }
+      }
+    }
   }
 }
 </script>
 
 <style scoped>
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  text-align: center;
-}
-
 .categories {
   padding: 2rem;
 }
