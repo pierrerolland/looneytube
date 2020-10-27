@@ -31,7 +31,6 @@ export default {
 
       const { token } = (await this.$axios.post(`${this.$axios.defaults.baseURL}/login`, formData)).data;
 
-      console.log(token);
       if (token) {
         localStorage.setItem('token', token);
         this.$router.push('/');
