@@ -22,7 +22,7 @@ class GetVideoLink
         $this->categoryProvider = $categoryProvider;
     }
 
-    public function __invoke(string $categorySlug, string $videoSlug)
+    public function __invoke(string $categorySlug, string $videoSlug): JsonResponse
     {
         try {
             return new JsonResponse($this->categoryProvider->getVideoLinkFromCategory($categorySlug, $videoSlug));

@@ -20,7 +20,7 @@ class GetCategories
         $this->categoryProvider = $categoryProvider;
     }
 
-    public function __invoke()
+    public function __invoke(): JsonResponse
     {
         try {
             return new JsonResponse($this->categoryProvider->getCategories());
