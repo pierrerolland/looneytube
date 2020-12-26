@@ -28,7 +28,7 @@ class VideoProvider
 
         return array_map(
             fn (string $fileName) => $this->generateVideo($rootDir, $fileName),
-            $this->directoryHelper->getContent($rootDir, ['file'], ['mkv', 'mp4'])
+            $this->directoryHelper->getContent($rootDir, ['file'], ['mkv', 'mp4', 'avi'])
         );
     }
 

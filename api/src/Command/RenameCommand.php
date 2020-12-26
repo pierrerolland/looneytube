@@ -9,15 +9,15 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class CreateThumbsCommand extends Command
+class RenameCommand extends Command
 {
-    protected static $defaultName = 'app:create-thumbs';
+    protected static $defaultName = 'app:rename';
 
     protected function configure()
     {
         $this
-            ->setDescription("Create thumbs for a given dir")
-            ->addArgument('dir', InputArgument::REQUIRED, 'MKV dir')
+            ->setDescription("Rename a set of files")
+            ->addArgument('dir', InputArgument::REQUIRED, 'Videos dir')
         ;
     }
 
@@ -29,13 +29,18 @@ class CreateThumbsCommand extends Command
         }
 
         $directoryHelper = new DirectoryHelper(realpath(__DIR__ . '/../../public'), new RequestStack());
-        foreach ($directoryHelper->getContent($dir, ['file'], ['avi', 'mkv', 'mp4']) as $videoName) {
-            $pathInfo = pathinfo(sprintf('%s%s', $dir, $videoName));
-            $thumbPath = sprintf('%sthumbs/%s.jpg', $dir, $pathInfo['filename']);
-            $video = new \PHPVideoToolkit\Video(sprintf('%s%s', $dir, $videoName));
-            $video->extractFrame(new \PHPVideoToolkit\Timecode(120))->save($thumbPath);
+        foreach ($directoryHelper->getContent($dir, ['file'], ['mkv', 'avi']) as $videoName) {
+            $newName = $this->applyRule($videoName);
+
+            rename($dir . $videoName, $dir . $newName);
+            $output->writeln(sprintf('<fg=green>Renamed "%s" to "%s"</>', $videoName, $newName));
         }
 
         return Command::SUCCESS;
+    }
+
+    protected function applyRule(string $videoName)
+    {
+        return preg_replace('#^N° \d+ - \d+ Walt Disney - (.+)$#', '$1', $videoName);
     }
 }
