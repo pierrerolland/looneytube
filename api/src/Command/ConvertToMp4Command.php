@@ -29,7 +29,7 @@ class ConvertToMp4Command extends Command
         }
 
         $directoryHelper = new DirectoryHelper(realpath(__DIR__ . '/../../public'), new RequestStack());
-        foreach ($directoryHelper->getContent($dir, ['file'], ['mkv', 'avi', 'mp4']) as $videoName) {
+        foreach ($directoryHelper->getContent($dir, ['file'], ['mkv', 'avi', 'mp4', 'm4v']) as $videoName) {
             $mkvPath = sprintf('%s%s', $dir, $videoName);
             $pathInfo = pathinfo(sprintf('%s%s', $dir, $videoName));
 
