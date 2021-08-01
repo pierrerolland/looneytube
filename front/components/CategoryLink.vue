@@ -22,6 +22,12 @@ a {
   box-shadow: #AAAAAA 2px 1px 4px;
   padding: 1rem;
   background-color: #FEFEFE;
+  user-drag: none;
+  -webkit-user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
 }
 
 a:hover {
