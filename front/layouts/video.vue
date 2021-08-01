@@ -12,7 +12,7 @@ html {
   box-sizing: border-box;
   margin: 0;
 }
-html, body, __nuxt, __layout {
+html, body, #__nuxt, #__layout {
   margin: 0;
   height: 100%;
   width: 100%;
