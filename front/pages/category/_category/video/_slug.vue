@@ -1,5 +1,5 @@
 <template>
-  <video controls autoplay>
+  <video controls autoplay @ended="handleEnded">
     <source :src="video.path" />
   </video>
 </template>
@@ -24,6 +24,11 @@ export default {
         }
       }
     }
+  },
+  methods: {
+    handleEnded() {
+      this.$router.push(`/category/${this.$route.params.category}`);
+    }
   }
 }
 </script>
@@ -31,5 +36,6 @@ export default {
 <style scoped>
 video {
   width: 100%;
+  height: 100%;
 }
 </style>
