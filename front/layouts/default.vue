@@ -57,4 +57,8 @@ html {
   justify-content: center;
   text-align: center;
 }
+
+img {
+  height: auto;
+}
 </style>
