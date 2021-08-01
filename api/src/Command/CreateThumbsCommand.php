@@ -32,6 +32,11 @@ class CreateThumbsCommand extends Command
         foreach ($directoryHelper->getContent($dir, ['file'], ['avi', 'mkv', 'mp4']) as $videoName) {
             $pathInfo = pathinfo(sprintf('%s%s', $dir, $videoName));
             $thumbPath = sprintf('%sthumbs/%s.jpg', $dir, $pathInfo['filename']);
+            
+            if (file_exists($thumbPath)) {
+                continue;
+            }
+            
             $video = new \PHPVideoToolkit\Video(sprintf('%s%s', $dir, $videoName));
             $video->extractFrame(new \PHPVideoToolkit\Timecode(120))->save($thumbPath);
         }
