@@ -36,9 +36,14 @@ class CreateThumbsCommand extends Command
             if (file_exists($thumbPath)) {
                 continue;
             }
-            
-            $video = new \PHPVideoToolkit\Video(sprintf('%s%s', $dir, $videoName));
-            $video->extractFrame(new \PHPVideoToolkit\Timecode(120))->save($thumbPath);
+
+            try {
+                $video = new \PHPVideoToolkit\Video(sprintf('%s%s', $dir, $videoName));
+                $video->extractFrame(new \PHPVideoToolkit\Timecode(120))->save($thumbPath);
+            } catch (\Exception $exception) {
+                $output->writeln('Could not create thumb, copying default thumb instead');
+                copy(sprintf('%sthumb.png', $dir), $thumbPath);
+            }
         }
 
         return Command::SUCCESS;
