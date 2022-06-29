@@ -41,16 +41,7 @@ class DirectoryHelper
 
         closedir($dirHandle);
 
-        usort($out, function (string $name1, string $name2) {
-            $name1 = trim(substr($name1, 0, strrpos($name1, '.')));
-            $name2 = trim(substr($name2, 0, strrpos($name2, '.')));
-
-            if ($name1 === $name2)  {
-                return 0;
-            }
-
-            return $name1 < $name2 ? -1 : 1;
-        });
+        usort($out, static fn (string $name1, string $name2) => strcasecmp(trim(substr($name1, 0, strrpos($name1, '.'))), trim(substr($name2, 0, strrpos($name2, '.'))));
 
         return $out;
     }
