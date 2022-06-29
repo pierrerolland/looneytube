@@ -41,7 +41,16 @@ class DirectoryHelper
 
         closedir($dirHandle);
 
-        sort($out);
+        usort($out, function (string $name1, string $name2) {
+            $name1 = trim(substr($name1, 0, strrpos($name1, '.')));
+            $name2 = trim(substr($name2, 0, strrpos($name2, '.')));
+
+            if ($name1 === $name2)  {
+                return 0;
+            }
+
+            return $name1 < $name2 ? -1 : 1;
+        });
 
         return $out;
     }
