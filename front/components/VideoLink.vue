@@ -1,6 +1,5 @@
 <template>
-  <nuxt-link :to="`/category/${categorySlug}/video/${video.slug}`">
-    <img v-if="!!video.picture" :src="video.picture" :alt="video.name" /><br>
+  <nuxt-link :to="`/category/${categorySlug}/video/${video.slug}`" :style="`background-image: url("${video.picture}");`">
     {{ video.name }}
   </nuxt-link>
 </template>
@@ -16,14 +15,20 @@ export default {
 
 <style scoped>
 a {
-  display: block;
+  display: flex;
+  min-height: 200px;
+  justify-content: center;
+  align-items: center;
   font-size: 1rem;
-  color: black;
+  font-weight: bold;
+  color: white;
   text-decoration: none;
   box-shadow: #AAAAAA 2px 1px 4px;
   padding: 1rem;
-  background-color: #FEFEFE;
+  background-color: #333333;
+  background-size: cover;
   user-drag: none;
+  text-shadow: 1px 1px 2px black;
   -webkit-user-drag: none;
   user-select: none;
   -moz-user-select: none;
@@ -32,10 +37,6 @@ a {
 }
 
 a:hover {
-  background-color: #F0F0F0;
-}
-
-img {
-  width: 100%;
+  border: 2px solid black;
 }
 </style>
