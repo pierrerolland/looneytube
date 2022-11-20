@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container">
-      <div>
+      <div style="width:100%;">
         <h1 v-if="$route.name === 'index'" class="title">
           <Logo />
         </h1>
