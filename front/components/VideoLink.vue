@@ -1,5 +1,5 @@
 <template>
-  <nuxt-link :to="`/category/${categorySlug}/video/${video.slug}`" :style="`background-image: url("${video.picture}");`">
+  <nuxt-link :to="`/category/${categorySlug}/video/${video.slug}`" :style="`background-image: url('${video.picture ? video.picture.replace('\'', '\\\'') : ''}');`">
     {{ video.name }}
   </nuxt-link>
 </template>
