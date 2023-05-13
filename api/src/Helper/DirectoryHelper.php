@@ -51,7 +51,7 @@ class DirectoryHelper
 
     private function transformBeforeSort(string $name): string
     {
-        return preg_replace('/(.+)(\.[^.]+)?$/', '$1', trim($name)) . ' 1';
+        return preg_replace('/([^.]+)(\.[^.]+)?$/', '$1', trim($name)) . ' 1';
     }
 
     public function getBrowserPath(string $fullPath = null, $urlEncode = true): ?string
