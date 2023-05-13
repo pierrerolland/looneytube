@@ -43,7 +43,7 @@ class DirectoryHelper
 
         usort(
             $out,
-            static fn (string $name1, string $name2) => strcasecmp(trim($name1), trim($name2))
+            static fn (string $name1, string $name2) => strcasecmp(trim($name1) . ' 1', trim($name2) . ' 1')
         );
 
         return $out;
