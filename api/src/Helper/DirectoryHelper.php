@@ -41,7 +41,10 @@ class DirectoryHelper
 
         closedir($dirHandle);
 
-        usort($out, static fn (string $name1, string $name2) => strcasecmp(trim(substr($name1, 0, -4)), trim(substr($name2, 0, -4))));
+        usort(
+            $out,
+            static fn (string $name1, string $name2) => strcasecmp(trim($name1), trim($name2))
+        );
 
         return $out;
     }
