@@ -43,10 +43,15 @@ class DirectoryHelper
 
         usort(
             $out,
-            static fn (string $name1, string $name2) => strcasecmp(trim($name1) . ' 1', trim($name2) . ' 1')
+            fn (string $name1, string $name2) => strcasecmp($this->transformBeforeSort($name1), $this->transformBeforeSort($name2))
         );
 
         return $out;
+    }
+
+    private function transformBeforeSort(string $name): string
+    {
+        return preg_replace('/(.+)(\.[^.]+)?$/', '$1', trim($name)) . ' 1';
     }
 
     public function getBrowserPath(string $fullPath = null, $urlEncode = true): ?string
