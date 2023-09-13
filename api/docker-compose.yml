@@ -4,7 +4,7 @@ services:
   php:
     build:
       context: .
-      target: app_php
+      target: looneytube_php
       args:
         SYMFONY_VERSION: ${SYMFONY_VERSION:-}
         STABILITY: ${STABILITY:-stable}
@@ -23,10 +23,14 @@ services:
       VIDEOS_DIR: videos
       ALLOWED_ORIGIN: http://looneytube.local
       JWT_PASSPHRASE: ${JWT_PASSPHRASE:-passphrase}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_REGION: ${AWS_REGION:-eu-west-3}
+      AWS_S3_BUCKET_NAME: ${AWS_S3_BUCKET_NAME}
   caddy:
     build:
       context: .
-      target: app_caddy
+      target: looneytube_caddy
     depends_on:
       - php
     environment:

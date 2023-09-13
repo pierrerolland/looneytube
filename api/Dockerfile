@@ -5,7 +5,7 @@
 # https://docs.docker.com/compose/compose-file/#target
 
 # Prod image
-FROM php:7.4-fpm-alpine AS app_php
+FROM php:7.4-fpm-alpine AS looneytube_php
 
 # Allow to use development versions of Symfony
 ARG STABILITY="stable"
@@ -36,7 +36,6 @@ RUN set -eux; \
     	intl \
     	zip \
     	opcache \
-        amqp \
         gd \
         json \
         mbstring \
@@ -99,7 +98,7 @@ RUN set -eux; \
     fi
 
 # Dev image
-FROM app_php AS app_php_dev
+FROM looneytube_php AS looneytube_php_dev
 
 ENV APP_ENV=dev XDEBUG_MODE=off
 VOLUME /srv/app/var/
@@ -115,15 +114,15 @@ RUN set -eux; \
 
 RUN rm -f .env.local.php
 
-FROM caddy:2.6-builder-alpine AS app_caddy_builder
+FROM caddy:2.6-builder-alpine AS looneytube_caddy_builder
 
 RUN xcaddy build
 
 # Caddy image
-FROM caddy:2.6-alpine AS app_caddy
+FROM caddy:2.6-alpine AS looneytube_caddy
 
 WORKDIR /srv/app
 
-COPY --from=app_caddy_builder --link /usr/bin/caddy /usr/bin/caddy
-COPY --from=app_php --link /srv/app/public public/
+COPY --from=looneytube_caddy_builder --link /usr/bin/caddy /usr/bin/caddy
+COPY --from=looneytube_php --link /srv/app/public public/
 COPY --link docker/caddy/Caddyfile /etc/caddy/Caddyfile

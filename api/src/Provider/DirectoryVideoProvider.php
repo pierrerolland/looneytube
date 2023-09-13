@@ -6,7 +6,7 @@ use App\Exception\VideosDirectoryNotOpenableException;
 use App\Helper\DirectoryHelper;
 use App\Model\Video;
 
-class VideoProvider
+class DirectoryVideoProvider
 {
     private DirectoryHelper $directoryHelper;
 

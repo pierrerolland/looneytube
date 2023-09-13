@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Exception\CategoryNotFoundException;
 use App\Exception\VideosDirectoryNotOpenableException;
 use App\Provider\CategoryProvider;
+use App\Provider\Resolver\CategoryProviderResolver;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,9 +17,9 @@ class GetCategory
 {
     private CategoryProvider $categoryProvider;
 
-    public function __construct(CategoryProvider $categoryProvider)
+    public function __construct(CategoryProviderResolver $categoryProviderResolver)
     {
-        $this->categoryProvider = $categoryProvider;
+        $this->categoryProvider = $categoryProviderResolver->resolve();
     }
 
     public function __invoke(string $categorySlug): JsonResponse
