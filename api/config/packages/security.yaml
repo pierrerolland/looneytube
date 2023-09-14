@@ -11,6 +11,10 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+        media:
+            pattern: ^/aws-media/.+
+            anonymous: true
+            stateless: true
         login:
             pattern: ^/login
             stateless: true
@@ -27,4 +31,5 @@ security:
                 authenticators:
                     - lexik_jwt_authentication.jwt_token_authenticator
     access_control:
+        - { path: ^/aws-media, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
