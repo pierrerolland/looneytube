@@ -29,7 +29,7 @@ class VideoWithThumb
         return $this->url;
     }
 
-    public function getThumbPath(): string
+    public function getThumbPath(): ?string
     {
         return $this->thumbPath;
     }
