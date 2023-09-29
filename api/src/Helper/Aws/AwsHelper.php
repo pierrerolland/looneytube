@@ -14,6 +14,8 @@ use Symfony\Component\Routing\RouterInterface;
 
 class AwsHelper
 {
+    private const ALLOWED_VIDEO_TYPES = ['mp4', 'mkv'];
+
     private const PUBLIC_ACCESS_DELAY = '+360 min';
 
     private ?S3Client $s3Client = null;
@@ -79,7 +81,7 @@ class AwsHelper
             ])->getIterator())
         );
 
-        $videosKeys = array_filter($response, static fn (string $key) => substr($key, -3) === 'mp4');
+        $videosKeys = array_filter($response, [$this, 'isKeyAllowed']);
 
         return array_map(
             fn (string $key) => new VideoWithThumb(
@@ -89,7 +91,7 @@ class AwsHelper
                     ? $this->getMediaUrl(sprintf('%s/thumbs/%s.jpg', $directory, substr($key, 0, -4)))
                     : null
             ),
-            $videosKeys
+            array_values($videosKeys)
         );
     }
 
@@ -109,6 +111,14 @@ class AwsHelper
             'aws_media',
             ['path' => urlencode($path)],
             RouterInterface::ABSOLUTE_URL
+        );
+    }
+
+    private function isKeyAllowed(string $key): bool
+    {
+        return in_array(
+            array_reverse(explode('.', $key))[0],
+            self::ALLOWED_VIDEO_TYPES
         );
     }
 }
